@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  background-color:azure;
+}
+
+label{
+  text-align: center;
+  padding-top: 20px;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
