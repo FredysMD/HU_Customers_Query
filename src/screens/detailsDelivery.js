@@ -10,7 +10,7 @@ const DetailsDeliver = () => {
         name:'',
         address:'',
         dateDelivery:'',
-        ordens_product:{}
+        ordens_product:[]
     })
 
 
