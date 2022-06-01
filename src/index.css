@@ -3,6 +3,10 @@ body {
   background-color:azure;
 }
 
+button{
+  margin: 13px;
+}
+
 label{
   text-align: center;
   padding-top: 20px;
