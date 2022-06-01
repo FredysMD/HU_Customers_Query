@@ -1,18 +1,33 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 
 
 
 const DetailsDeliver = () => {
 
+    
+    const [detail, setDetail] = useState({
+        code:'',
+        name:'',
+        address:'',
+        dateDelivery:'',
+        ordens_product:{}
+    })
+
+
     useEffect(() => {
       
+        fetch('https://api.npms.io/v2/search?q=react')
+        .then(response => response.json())
+        .then(data => setDetail({ data }));
         
       return () => {
         
       }
-    }, [])
+    }, [detail])
     
-    
+    const { code, name, address, dateDelivery } = detail
+    const [ ordens_product ] = detail
+
     return (
         
         <div className="m-0 vh-80 row justify-content-center align-items-center">
@@ -21,28 +36,28 @@ const DetailsDeliver = () => {
                     <tbody>
                         <tr>
                             <th>
-                                Código de pedido:
+                                Código de pedido: { code }
                             </th>
                             <td>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Cliente: 
+                                Cliente: { name } 
                             </th>
                             <td>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Dirección de entrega:
+                                Dirección de entrega: { address }
                             </th>
                             <td>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Estado del pedido:
+                                Estado del pedido: { address ? 'Proceso' : 'Entregado' }
                             </th>
                             <td>
                                
@@ -50,7 +65,7 @@ const DetailsDeliver = () => {
                         </tr>
                         <tr>
                             <th>
-                                Fecha estimada de entrega:
+                                Fecha estimada de entrega: { dateDelivery }
                             </th>
                             <td>
                                
@@ -66,7 +81,17 @@ const DetailsDeliver = () => {
                     <th>Cantidad</th>        
                 </thead>
                 <tbody>
-
+                    {
+                        ordens_product.map(
+                            (op)=>(
+                                <tr>
+                                    <td>{op.name}</td>
+                                    <td>{op.ref}</td> 
+                                    <td>{op.quantity}</td>    
+                                </tr> 
+                            )
+                        )
+                    }
                 </tbody> 
             </table>
             <div className="row">    
