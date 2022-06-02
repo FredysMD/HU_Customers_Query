@@ -1,4 +1,5 @@
 import React, {useState} from "react"
+import { useNavigate } from "react-router-dom";
 
 
  const Index = () => {
@@ -8,13 +9,35 @@ import React, {useState} from "react"
         typeId:'',
         idUser:'',
     })
-    const [error, setError] = useState('')
-    const [noData, setNoData] = useState('')
 
-    const handleSubmit = () => {
+    const history = useNavigate();
 
-        console.log(formData)
+    const handleSubmit = (e) => {
 
+        e.preventDefault();
+
+        const { codDelivery, typeId, idUser } = formData;
+
+        console.log(codDelivery)
+        console.log(idUser)
+        // Fetch POST method - sends new data to an API
+        fetch(`https://dashfleetbackend.herokuapp.com/api/ordens/${idUser}/${codDelivery}`, {
+            // use POST method
+            method: "GET",
+            // include necessary headers
+            headers: {
+                "content-type": "application/json",
+            },
+            // send data back to API
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.data.length)
+
+            if(data.data.length > 0){
+                history("/detail", {state:data});
+            }
+        })
     }
 
     const handleChange = e =>
@@ -23,24 +46,22 @@ import React, {useState} from "react"
             [e.target.name]: e.target.value
         });
 
-    const { codDelivery, typeId, idUser } = formData;
 
     return (
         <div className="m-0 vh-100 row justify-content-center align-items-center"> 
-            <form onSubmit={handleSubmit}>
-                <div class="row">
+            <form onSubmit={e => handleSubmit(e)}>
+                <div className="row">
                     <label className="form-label">Código pedido </label>   
                     <input
-                        value={codDelivery}
                         onChange={e => handleChange(e)}
                         className="form-control"
-                        name="cod"            
+                        name="codDelivery"            
                         type="text"
                         placeholder="ingrese el código del pedido"
                         required
                     />
                 </div>
-                <div class="row">
+                <div className="row">
                     <label className="form-label">Tipo de documento</label>   
                     <select
                         onChange={e => handleChange(e)}
@@ -51,10 +72,9 @@ import React, {useState} from "react"
                         <option value="1">Tarjeta identidad</option>
                     </select>
                 </div>
-                <div class="row">
+                <div className="row">
                     <label className="form-label">Documento</label>
                     <input
-                        value={idUser}
                         onChange={e => handleChange(e)} 
                         className="form-control"
                         name="idUser"            
@@ -63,8 +83,8 @@ import React, {useState} from "react"
                         required
                     />
                 </div>
-                <div class="row">
-                    <div class="col text-center pt-4">
+                <div className="row">
+                    <div className="col text-center pt-4">
                         <button className="btn btn-primary" type="submit">Consultar</button> 
                     </div>
                 </div>

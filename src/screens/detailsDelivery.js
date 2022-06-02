@@ -1,32 +1,11 @@
-import React, {useEffect, useState} from "react"
-
-
+import React from "react"
+import {useLocation, useNavigate} from 'react-router-dom';
 
 const DetailsDeliver = () => {
 
-    
-    const [detail, setDetail] = useState({
-        code:'',
-        name:'',
-        address:'',
-        dateDelivery:'',
-        ordens_product:[]
-    })
+    const location = useLocation();
 
-
-    useEffect(() => {
-      
-        fetch('https://api.npms.io/v2/search?q=react')
-        .then(response => response.json())
-        .then(data => setDetail({ data }));
-        
-      return () => {
-        
-      }
-    }, [detail])
-    
-    const { code, name, address, dateDelivery } = detail
-    const [ ordens_product ] = detail
+    const history = useNavigate();
 
     return (
         
@@ -36,28 +15,28 @@ const DetailsDeliver = () => {
                     <tbody>
                         <tr>
                             <th>
-                                Código de pedido: { code }
+                                Código de pedido: { location.state.data[0].code }
                             </th>
                             <td>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Cliente: { name } 
+                                Cliente: { location.state.data[0].name_customer } 
                             </th>
                             <td>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Dirección de entrega: { address }
+                                Dirección de entrega: { location.state.data[0].address_delivery }
                             </th>
                             <td>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Estado del pedido: { address ? 'Proceso' : 'Entregado' }
+                                Estado del pedido: { location.state.data[0].state ? 'Proceso' : 'Entregado' }
                             </th>
                             <td>
                                
@@ -65,7 +44,7 @@ const DetailsDeliver = () => {
                         </tr>
                         <tr>
                             <th>
-                                Fecha estimada de entrega: { dateDelivery }
+                                Fecha estimada de entrega: { location.state.data[0].date_delivery }
                             </th>
                             <td>
                                
@@ -82,9 +61,9 @@ const DetailsDeliver = () => {
                 </thead>
                 <tbody>
                     {
-                        ordens_product.map(
-                            (op)=>(
-                                <tr>
+                        location.state.data.map(
+                            (op, i)=>(
+                                <tr key={i}>
                                     <td>{op.name}</td>
                                     <td>{op.ref}</td> 
                                     <td>{op.quantity}</td>    
@@ -96,7 +75,7 @@ const DetailsDeliver = () => {
             </table>
             <div className="row">    
                 <button className="btn btn-danger" type="submit">Cerrar</button>
-                <button className="btn btn-primary" type="submit">Nueva consulta</button>
+                <button onClick={ () => history("/")} className="btn btn-primary" type="submit">Nueva consulta</button>
             </div>
         </div> 
         
